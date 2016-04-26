@@ -1,5 +1,13 @@
+/*
+ * Copyright © 2016 Sviatoslav Semchyshyn
+ * 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. 
+ */
 package main;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 
@@ -10,31 +18,43 @@ public class CharIcon implements Icon {
     private int w;
     private int h;
     private int m;
-    
+
     private boolean[][] pixels;
-    
-    public CharIcon(int w, int h, int m)
-    {
+
+    public CharIcon(int w, int h, int m) {
         this.w = w;
         this.h = h;
         this.m = m;
         pixels = new boolean[w][h];
     }
-    
+
+    public void setPixel(int x, int y, boolean state) {
+        pixels[x][y] = state;
+    }
+
+    public boolean getPixel(int x, int y) {
+        return pixels[x][y];
+    }
+
     @Override
     public int getIconHeight() {
-        return (h*m);
+        return (h * m);
     }
 
     @Override
     public int getIconWidth() {
-        return (w*m);
+        return (w * m);
     }
 
     @Override
-    public void paintIcon(Component arg0, Graphics arg1, int arg2, int arg3) {
-        // TODO Auto-generated method stub
-
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+        for (int xi = 0; xi < w; xi++) {
+            for (int yi = 0; yi < h; yi++) {
+                if (pixels[xi][yi]) g.setColor(Color.blue);
+                else g.setColor(Color.black);
+                g.fillRect(x + xi * m, y + yi * m, m, m);
+            }
+        }
     }
 
 }
