@@ -31,11 +31,22 @@ public class CharIcon implements Icon {
         pixels = new boolean[w][h];
     }
 
+    public CharIcon(int w, int h, int m, CharIcon prev) {
+        this(w, h, m);
+        if (prev == null) return;
+        for (int ix = 0; ix < w; ix++) {
+            for (int iy = 0; iy < h; iy++) {
+                setPixel(ix, iy, prev.getPixel(ix, iy));
+            }
+        }
+    }
+
     public void setPixel(int x, int y, boolean state) {
         pixels[x][y] = state;
     }
 
     public boolean getPixel(int x, int y) {
+        if (x >= w || y >= h) return false;
         return pixels[x][y];
     }
 
@@ -49,12 +60,15 @@ public class CharIcon implements Icon {
         return (w * m);
     }
 
+    private static final Color back = Color.black;
+    private static final Color front = Color.blue;
+
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         for (int xi = 0; xi < w; xi++) {
             for (int yi = 0; yi < h; yi++) {
-                if (pixels[xi][yi]) g.setColor(Color.blue);
-                else g.setColor(Color.black);
+                if (pixels[xi][yi]) g.setColor(front);
+                else g.setColor(back);
                 g.fillRect(x + xi * m, y + yi * m, m, m);
             }
         }
